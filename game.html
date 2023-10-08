@@ -1,0 +1,229 @@
+<!-- Game-2  MessageGame -->
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
+</head>
+
+<body>
+    <div class="description">
+        <h1>MESSAGE GUESS</h1>
+        <br>There is a short message for you here that includes only two words...<br></b><br><i>Can you find those two words to get the message? Start with inserting a letter from your keyboard.</i>
+        <br><br><br>
+    </div>
+    </div>
+    <div class="container">
+<header>
+    <h1>your guess is...</h1>
+    <br>
+</header>
+        <div class = "titled"></div>
+   
+        <div class = "underScore"></div>
+            <br>
+            <div class = "titled">Win Counter</div>
+               <div class = "winCounter"></div>
+        <div class = "titled">Guesses remaining</div>
+               <div class = "guessCounter"></div>
+
+
+        <div class = "titled">Right Guesses</div>
+            <div class = "rightGuess"></div>
+        <div class = "titled">Wrong Guesses</div>
+            <div class = "wrongGuess"></div>
+        
+    </div>
+</body>
+
+<style>
+
+div {
+color:rgb(227, 224, 191);
+
+}
+ body { 
+    background: url('images/bg_game.gif') no-repeat center center fixed;
+    background-size: cover; font-family: tahoma; color: #000000
+} 
+
+    header {
+    /* border: 3px solid black; */
+    font-family: 'Gochi Hand';
+    font-size: 40px;
+    text-align: center;
+    color: rgb(243, 158, 31);
+}
+
+.titled {
+  
+    font-size: 30px;
+    text-align: center;
+    margin: auto;
+    display: block;
+    font-family: 'Gochi Hand';
+    color: rgb(255, 206, 133);
+    width:  20%;
+    border-radius: 300px;
+    opacity: 0.8;
+
+}
+
+.winCounter {
+    color:white;
+    border: 3px solid black;
+    font-size: 25px;
+    text-align: center;
+    margin: auto;
+    height: 40px;
+    display: block;
+    width: 36%;
+    background-color: black;
+    opacity: 0.8;
+}
+
+
+.guessCounter {
+    color: white;
+    border: 3px solid black;
+    font-size: 25px;
+    text-align: center;
+    margin: auto;
+    height: 40px;
+    display: block;
+    width: 36%;
+   background-color: black;
+    opacity: 0.8;
+}
+
+.underScore{
+    color: white;
+    border: 3px solid black;
+    font-size: 75px;
+    text-align: center;
+    margin: auto;
+    height: 150px;
+    display: block;
+    width: 66%;
+    background-color: black;
+    opacity: 0.8;
+}
+
+.rightGuess{
+    color: white;
+    border: 3px solid black;
+    font-size: 30px;
+    text-align: center;
+    margin: auto;
+    height: 150px;
+    display: block;
+    width: 66%;
+    background-color: black;
+    opacity: 0.8;
+}
+
+
+.wrongGuess{
+    color: white;
+    border: 3px solid black;
+    font-size: 30px;
+    text-align: center;
+    margin: auto;
+    height: 150px;
+    display: block;
+    width: 66%;
+    background-color:black;
+    opacity: 0.8;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+
+</style>
+
+<script>
+
+      //array of words
+ const word = ["dream","big"];
+
+//choose word randomly
+let randNum; 
+let choosenWord; 
+let rightWord = [];
+let wrongWord = [];
+let underScore = [];
+var guessCount = 10;
+var winCount = 0;
+
+// Dom manipulation here
+let docUnderScore = document.getElementsByClassName("underScore");
+let docRightGuess = document.getElementsByClassName("rightGuess");
+let docWrongGuess = document.getElementsByClassName("wrongGuess");
+let docWinCounter = document.getElementsByClassName("winCounter");
+let docGuessCounter = document.getElementsByClassName("guessCounter");
+
+
+
+function restart() {
+  rightWord = [];
+  wrongWord = [];
+  guessCount = 10;
+  randNum = Math.floor(Math.random() * word.length);
+  choosenWord = word[randNum];
+  underScore = generateUnderscore(choosenWord);
+  // generateUnderscore();
+  docUnderScore[0].innerHTML = underScore.join(' ');
+  console.log("chosen word = " + choosenWord);
+}
+
+//create underscores based on length of word
+const generateUnderscore = (word) => {
+  console.log("xxxxxxxxxxxxxxxxxxx");
+  const underscores = [];
+  for (let i = 0; i < word.length; i++) {
+    underscores.push('_');
+  }
+  return underscores;
+}
+
+//get users guess
+document.addEventListener('keypress', (event) => {
+  let keyWord = String.fromCharCode(event.keyCode).toLowerCase();
+  //if guess is right...
+  if (choosenWord.indexOf(keyWord) > -1) {
+    // add to right words array
+    rightWord.push(keyWord);
+    // replace the underscore with the correct letter
+    underScore[choosenWord.indexOf(keyWord)] = keyWord;
+    docUnderScore[0].innerHTML = underScore.join(' ');
+    docRightGuess[0].innerHTML = rightWord;
+    //check to see if user word matches guesses
+    
+    
+    if (underScore.join('') == choosenWord) {
+      alert("You win!");
+      winCount++;
+      console.log("win count = " + winCount);
+      docWinCounter[0].innerHTML = winCount;
+      restart();
+     
+    } 
+  } 
+  else {
+    wrongWord.push(keyWord);
+    docWrongGuess[0].innerHTML = wrongWord;
+    guessCount--;
+    console.log("guess counter = " + guessCount);
+    docGuessCounter[0].innerHTML = guessCount;
+    
+  }
+
+  if (guessCount == 0) {
+    alert("You did not guess correctly :(");
+    restart();
+  }
+
+});
+
+restart();
+</script>
+
+</html>
